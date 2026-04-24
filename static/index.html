@@ -1,0 +1,392 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>PayFreez • Advanced Fraud Detection</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+    <link href="/static/css/style.css" rel="stylesheet">
+</head>
+<body>
+    <!-- Navigation -->
+    <nav class="navbar navbar-expand-lg navbar-dark bg-primary">
+        <div class="container">
+            <a class="navbar-brand" href="#" style="font-weight: bold; font-size: 1.5rem;">
+                <i class="fas fa-snowflake me-2" style="color: #00d4ff; animation: pulse 2s infinite;"></i>
+                <span class="payfreez-gradient-text">Pay</span><span style="color: #ffffff; font-weight: 600;">Freez</span>
+            </a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav ms-auto">
+                    <li class="nav-item">
+                        <a class="nav-link active" href="#dashboard">Dashboard</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#death-events">Death Events</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#verification">Verification</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#beneficiaries">Beneficiaries</a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Main Container -->
+    <div class="container-fluid mt-4">
+        <div class="row">
+            <!-- Sidebar -->
+            <div class="col-md-3 col-lg-2">
+                <div class="sidebar">
+                    <ul class="nav nav-pills flex-column">
+                        <li class="nav-item">
+                            <a class="nav-link active" href="#" onclick="showSection('dashboard')">
+                                <i class="fas fa-tachometer-alt me-2"></i>Dashboard
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="#" onclick="showSection('death-events')">
+                                <i class="fas fa-file-medical-alt me-2"></i>Death Events
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="#" onclick="showSection('verification')">
+                                <i class="fas fa-user-check me-2"></i>Verification
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="#" onclick="showSection('beneficiaries')">
+                                <i class="fas fa-users me-2"></i>Beneficiaries
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="#" onclick="showSection('reports')">
+                                <i class="fas fa-chart-bar me-2"></i>Reports
+                            </a>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+
+            <!-- Main Content -->
+            <div class="col-md-9 col-lg-10">
+                <!-- Dashboard Section -->
+                <div id="dashboard" class="content-section">
+                    <h2 class="mb-4" style="color: #0066ff; font-weight: 600;">
+                        <i class="fas fa-snowflake me-2" style="color: #00d4ff;"></i>
+                        PayFreez Dashboard
+                    </h2>
+                    
+                    <!-- Stats Cards -->
+                    <div class="row mb-4" id="stats-cards">
+                        <!-- Stats will be loaded dynamically -->
+                    </div>
+
+                    <!-- Recent Activity -->
+                    <div class="row">
+                        <div class="col-lg-8">
+                            <div class="card">
+                                <div class="card-header">
+                                    <h5 class="card-title mb-0">Recent Death Events</h5>
+                                </div>
+                                <div class="card-body">
+                                    <div class="table-responsive">
+                                        <table class="table table-sm">
+                                            <thead>
+                                                <tr>
+                                                    <th>Aadhaar ID</th>
+                                                    <th>Name</th>
+                                                    <th>Risk Score</th>
+                                                    <th>Status</th>
+                                                    <th>Action</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody id="recent-events">
+                                                <!-- Recent events will be loaded here -->
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-lg-4">
+                            <div class="card">
+                                <div class="card-header">
+                                    <h5 class="card-title mb-0">System Status</h5>
+                                </div>
+                                <div class="card-body">
+                                    <div class="status-item">
+                                        <span class="status-indicator bg-success"></span>
+                                        <span>API Service</span>
+                                        <span class="badge bg-success ms-auto">Online</span>
+                                    </div>
+                                    <div class="status-item">
+                                        <span class="status-indicator bg-success"></span>
+                                        <span>Database</span>
+                                        <span class="badge bg-success ms-auto">Connected</span>
+                                    </div>
+                                    <div class="status-item">
+                                        <span class="status-indicator bg-warning"></span>
+                                        <span>PFMS Integration</span>
+                                        <span class="badge bg-warning ms-auto">Sandbox</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Death Events Section -->
+                <div id="death-events" class="content-section" style="display: none;">
+                    <h2 class="mb-4">Death Event Registration</h2>
+                    
+                    <div class="card">
+                        <div class="card-header">
+                            <h5 class="card-title mb-0">Register New Death Event</h5>
+                        </div>
+                        <div class="card-body">
+                            <form id="death-event-form">
+                                <div class="row">
+                                    <div class="col-md-6">
+                                        <div class="mb-3">
+                                            <label for="aadhaar_id" class="form-label">Aadhaar ID</label>
+                                            <input type="text" class="form-control" id="aadhaar_id" name="aadhaar_id" 
+                                                   pattern="[0-9]{12}" maxlength="12" required>
+                                            <div class="form-text">12-digit Aadhaar number</div>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <div class="mb-3">
+                                            <label for="name" class="form-label">Full Name</label>
+                                            <input type="text" class="form-control" id="name" name="name" required>
+                                        </div>
+                                    </div>
+                                </div>
+                                
+                                <div class="row">
+                                    <div class="col-md-6">
+                                        <div class="mb-3">
+                                            <label for="dob" class="form-label">Date of Birth</label>
+                                            <input type="date" class="form-control" id="dob" name="dob" required>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <div class="mb-3">
+                                            <label for="death_date" class="form-label">Date of Death</label>
+                                            <input type="date" class="form-control" id="death_date" name="death_date" required>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="row">
+                                    <div class="col-md-6">
+                                        <div class="mb-3">
+                                            <label for="place_of_death" class="form-label">Place of Death</label>
+                                            <input type="text" class="form-control" id="place_of_death" name="place_of_death" required>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <div class="mb-3">
+                                            <label for="registrar_id" class="form-label">Registrar ID</label>
+                                            <input type="text" class="form-control" id="registrar_id" name="registrar_id" required>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="mb-3">
+                                    <label for="cause_of_death" class="form-label">Cause of Death</label>
+                                    <textarea class="form-control" id="cause_of_death" name="cause_of_death" rows="3" required></textarea>
+                                </div>
+
+                                <div class="mb-3">
+                                    <label for="registrar_signature" class="form-label">Digital Signature</label>
+                                    <textarea class="form-control" id="registrar_signature" name="registrar_signature" 
+                                              rows="4" placeholder="Digital signature from registrar" required></textarea>
+                                </div>
+
+                                <button type="submit" class="btn btn-primary">
+                                    <i class="fas fa-paper-plane me-2"></i>Submit Death Event
+                                </button>
+                            </form>
+                        </div>
+                    </div>
+
+                    <!-- Results -->
+                    <div id="death-event-result" class="mt-4" style="display: none;">
+                        <!-- Results will be displayed here -->
+                    </div>
+                </div>
+
+                <!-- Verification Section -->
+                <div id="verification" class="content-section" style="display: none;">
+                    <h2 class="mb-4">Identity Verification</h2>
+                    
+                    <div class="row">
+                        <!-- Biometric Verification -->
+                        <div class="col-lg-6">
+                            <div class="card">
+                                <div class="card-header">
+                                    <h5 class="card-title mb-0">Biometric Verification</h5>
+                                </div>
+                                <div class="card-body">
+                                    <form id="biometric-form">
+                                        <div class="mb-3">
+                                            <label for="bio_aadhaar_id" class="form-label">Aadhaar ID</label>
+                                            <input type="text" class="form-control" id="bio_aadhaar_id" 
+                                                   pattern="[0-9]{12}" maxlength="12" required>
+                                        </div>
+                                        <div class="mb-3">
+                                            <label for="fingerprint_data" class="form-label">Fingerprint Data</label>
+                                            <textarea class="form-control" id="fingerprint_data" rows="4" 
+                                                      placeholder="Base64 encoded fingerprint data" required></textarea>
+                                        </div>
+                                        <button type="submit" class="btn btn-success">
+                                            <i class="fas fa-fingerprint me-2"></i>Verify Biometric
+                                        </button>
+                                    </form>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- eKYC Verification -->
+                        <div class="col-lg-6">
+                            <div class="card">
+                                <div class="card-header">
+                                    <h5 class="card-title mb-0">eKYC Verification</h5>
+                                </div>
+                                <div class="card-body">
+                                    <form id="ekyc-form">
+                                        <div class="mb-3">
+                                            <label for="ekyc_aadhaar_id" class="form-label">Aadhaar ID</label>
+                                            <input type="text" class="form-control" id="ekyc_aadhaar_id" 
+                                                   pattern="[0-9]{12}" maxlength="12" required>
+                                        </div>
+                                        <div class="mb-3">
+                                            <label for="otp" class="form-label">OTP</label>
+                                            <input type="text" class="form-control" id="otp" 
+                                                   pattern="[0-9]{6}" maxlength="6" placeholder="6-digit OTP" required>
+                                            <div class="form-text">For testing, use: 123456</div>
+                                        </div>
+                                        <button type="submit" class="btn btn-info">
+                                            <i class="fas fa-mobile-alt me-2"></i>Verify eKYC
+                                        </button>
+                                    </form>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Verification Results -->
+                    <div id="verification-results" class="mt-4">
+                        <!-- Results will be displayed here -->
+                    </div>
+                </div>
+
+                <!-- Beneficiaries Section -->
+                <div id="beneficiaries" class="content-section" style="display: none;">
+                    <h2 class="mb-4">Beneficiary Management</h2>
+                    
+                    <div class="card">
+                        <div class="card-header d-flex justify-content-between align-items-center">
+                            <h5 class="card-title mb-0">Search Beneficiary</h5>
+                        </div>
+                        <div class="card-body">
+                            <form id="search-form" class="mb-4">
+                                <div class="row">
+                                    <div class="col-md-8">
+                                        <input type="text" class="form-control" id="search_aadhaar_id" 
+                                               placeholder="Enter Aadhaar ID" pattern="[0-9]{12}" maxlength="12">
+                                    </div>
+                                    <div class="col-md-4">
+                                        <button type="submit" class="btn btn-primary">
+                                            <i class="fas fa-search me-2"></i>Search
+                                        </button>
+                                    </div>
+                                </div>
+                            </form>
+
+                            <!-- Search Results -->
+                            <div id="beneficiary-results">
+                                <!-- Results will be displayed here -->
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Reports Section -->
+                <div id="reports" class="content-section" style="display: none;">
+                    <h2 class="mb-4">Reports & Analytics</h2>
+                    
+                    <div class="row">
+                        <div class="col-lg-6">
+                            <div class="card">
+                                <div class="card-header">
+                                    <h5 class="card-title mb-0">Risk Score Distribution</h5>
+                                </div>
+                                <div class="card-body">
+                                    <canvas id="riskChart" width="400" height="200"></canvas>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-lg-6">
+                            <div class="card">
+                                <div class="card-header">
+                                    <h5 class="card-title mb-0">Status Overview</h5>
+                                </div>
+                                <div class="card-body">
+                                    <canvas id="statusChart" width="400" height="200"></canvas>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="row mt-4">
+                        <div class="col-12">
+                            <div class="card">
+                                <div class="card-header">
+                                    <h5 class="card-title mb-0">Export Data</h5>
+                                </div>
+                                <div class="card-body">
+                                    <p>Download reports and data exports:</p>
+                                    <button class="btn btn-outline-primary me-2">
+                                        <i class="fas fa-download me-2"></i>Export Beneficiaries (CSV)
+                                    </button>
+                                    <button class="btn btn-outline-primary me-2">
+                                        <i class="fas fa-download me-2"></i>Export Death Events (CSV)
+                                    </button>
+                                    <button class="btn btn-outline-primary">
+                                        <i class="fas fa-download me-2"></i>Export Audit Logs (CSV)
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Toast Container -->
+    <div class="toast-container position-fixed bottom-0 end-0 p-3" id="toast-container">
+        <!-- Toasts will be added here -->
+    </div>
+
+    <!-- Loading Spinner -->
+    <div id="loading-spinner" class="loading-spinner" style="display: none;">
+        <div class="spinner-border text-primary" role="status">
+            <span class="visually-hidden">Loading...</span>
+        </div>
+    </div>
+
+    <!-- Scripts -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="/static/js/app.js"></script>
+</body>
+</html>
